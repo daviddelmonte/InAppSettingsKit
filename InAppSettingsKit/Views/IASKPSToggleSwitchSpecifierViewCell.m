@@ -37,10 +37,12 @@
     // Configure the view for the selected state
 }
 
-
-- (void)dealloc {
-    [super dealloc];
-}
+//DD
+/*
+ - (void)dealloc {
+ [super dealloc];
+ } 
+ */
 
 
 @end

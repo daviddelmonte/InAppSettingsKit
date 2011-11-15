@@ -21,10 +21,17 @@
 
 @synthesize key=_key;
 
+//DD
+/*
+ - (void)dealloc {
+ [_key release], _key = nil;
+ 
+ [super dealloc];
+ }
+ */
 - (void)dealloc {
-    [_key release], _key = nil;
+    _key = nil;
 	
-    [super dealloc];
 }
 
 @end

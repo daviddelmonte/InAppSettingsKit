@@ -62,7 +62,8 @@
 - (void)dealloc {
 	_minImage.image = nil;
 	_maxImage.image = nil;
-    [super dealloc];
+	//DD
+	//[super dealloc];
 }
 
 - (void)prepareForReuse {

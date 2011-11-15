@@ -20,7 +20,9 @@
 @interface IASKSlider : UISlider {
     NSString *_key;
 }
+//DD
+//@property (nonatomic, retain) NSString *key;
 
-@property (nonatomic, retain) NSString *key;
+@property (nonatomic, strong) NSString *key;
 
 @end

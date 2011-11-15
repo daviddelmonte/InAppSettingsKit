@@ -39,10 +39,18 @@
 
 
 - (void)dealloc {
-	[webView release], webView = nil;
-	[url release], url = nil;
+	//DD
+	/*
+	 [webView release], webView = nil;
+	 [url release], url = nil;
+	 
+	 
+	 [super dealloc];
+
+	 */
+	webView = nil;
+	url = nil;
 	
-	[super dealloc];
 }
 
 - (void)viewWillAppear:(BOOL)animated {  
@@ -93,13 +101,14 @@
 				}
 				NSString *key = [[keyValue objectAtIndex:0] lowercaseString];
 				NSString *value = [keyValue objectAtIndex:1];
-				
+				//DD
+				/*
 				value =  (NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault,
 																							 (CFStringRef)value,
 																							 CFSTR(""),
 																							 kCFStringEncodingUTF8);
 				[value autorelease];
-				
+				*/
 				if ([key isEqualToString:@"subject"]) {
 					[mailViewController setSubject:value];
 				}
@@ -127,7 +136,8 @@
 		[mailViewController setToRecipients:toRecipients];
 
 		[self presentModalViewController:mailViewController animated:YES];
-		[mailViewController release];
+		//DD
+		//[mailViewController release];
 		return NO;
 	}
 	

@@ -42,9 +42,16 @@ static NSString *kIASKCredits = @"Powered by InAppSettingsKit"; // Leave this as
 CGRect IASKCGRectSwap(CGRect rect);
 
 @interface IASKAppSettingsViewController ()
-@property (nonatomic, retain) NSMutableArray *viewList;
-@property (nonatomic, retain) NSIndexPath *currentIndexPath;
-@property (nonatomic, retain) id currentFirstResponder;
+//DD
+/*
+ @property (nonatomic, retain) NSMutableArray *viewList;
+ @property (nonatomic, retain) NSIndexPath *currentIndexPath;
+ @property (nonatomic, retain) id currentFirstResponder;
+ 
+ */
+@property (nonatomic, strong) NSMutableArray *viewList;
+@property (nonatomic, strong) NSIndexPath *currentIndexPath;
+@property (nonatomic, strong) id currentFirstResponder;
 
 - (void)_textChanged:(id)sender;
 - (void)synchronizeSettings;
@@ -82,13 +89,16 @@ CGRect IASKCGRectSwap(CGRect rect);
 	if (!_file) {
 		return @"Root";
 	}
-	return [[_file retain] autorelease];
+	//DD
+	//return [[_file retain] autorelease];
+	return _file;
 }
 
 - (void)setFile:(NSString *)file {
 	if (file != _file) {
-        
-		[_file release];
+		//DD
+		//[_file release];
+		
 		_file = [file copy];
 	}
 	
@@ -164,8 +174,10 @@ CGRect IASKCGRectSwap(CGRect rect);
                                                                                     target:self 
                                                                                     action:@selector(dismiss:)];
         self.navigationItem.rightBarButtonItem = buttonItem;
-        [buttonItem release];
-    } 
+		//DD
+		// [buttonItem release];
+	
+	} 
     if (!self.title) {
         self.title = NSLocalizedString(@"Settings", @"");
     }
@@ -231,16 +243,25 @@ CGRect IASKCGRectSwap(CGRect rect);
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [_viewList release], _viewList = nil;
-    [_currentIndexPath release], _currentIndexPath = nil;
-	[_file release], _file = nil;
-	[_currentFirstResponder release], _currentFirstResponder = nil;
-	[_settingsReader release], _settingsReader = nil;
-    [_settingsStore release], _settingsStore = nil;
+	//DD
+	/*
+	 [_viewList release], _viewList = nil;
+	 [_currentIndexPath release], _currentIndexPath = nil;
+	 [_file release], _file = nil;
+	 [_currentFirstResponder release], _currentFirstResponder = nil;
+	 [_settingsReader release], _settingsReader = nil;
+	 [_settingsStore release], _settingsStore = nil;
+	 [super dealloc];
+	 */
+    _viewList = nil;
+    _currentIndexPath = nil;
+	_file = nil;
+	_currentFirstResponder = nil;
+	_settingsReader = nil;
+    _settingsStore = nil;
 	
 	_delegate = nil;
 
-    [super dealloc];
 }
 
 
@@ -410,7 +431,12 @@ CGRect IASKCGRectSwap(CGRect rect);
     }
     else if ([[specifier type] isEqualToString:kIASKPSMultiValueSpecifier]) {
         if (!cell) {
-            cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+            //DD
+			/*
+			 cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			 */
+			
+			cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.backgroundColor = [UIColor whiteColor];
 		}
@@ -421,7 +447,12 @@ CGRect IASKCGRectSwap(CGRect rect);
     }
     else if ([[specifier type] isEqualToString:kIASKPSTitleValueSpecifier]) {
         if (!cell) {
-            cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			  cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			 
+			 */
+            cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.backgroundColor = [UIColor whiteColor];
         }
@@ -486,7 +517,7 @@ CGRect IASKCGRectSwap(CGRect rect);
         }
 		
         if ([[specifier maximumValueImage] length] > 0) {
-            ((IASKPSSliderSpecifierViewCell*)cell).maxImage.image = [UIImage imageWithContentsOfFile:[_settingsReader pathForImageNamed:[specifier maximumValueImage]]];
+            ((IASKPSSliderSpecifierViewCell*)cell).maxImage.image = [UIImage imageWithContentsOfFile:[_settingsReader pathForImageNamed:[specifier minimumValueImage]]];
 		}
         
 		IASKSlider *slider = ((IASKPSSliderSpecifierViewCell*)cell).slider;
@@ -500,7 +531,11 @@ CGRect IASKCGRectSwap(CGRect rect);
     }
     else if ([[specifier type] isEqualToString:kIASKPSChildPaneSpecifier]) {
         if (!cell) {
-            cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			 cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			 */
+            cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]];
 			[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 			cell.backgroundColor = [UIColor whiteColor];
         }
@@ -509,7 +544,11 @@ CGRect IASKCGRectSwap(CGRect rect);
         return cell;
     } else if ([[specifier type] isEqualToString:kIASKOpenURLSpecifier]) {
         if (!cell) {
-            cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			  cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			 */
+            cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]];
 			[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 			cell.backgroundColor = [UIColor whiteColor];
         }
@@ -519,7 +558,11 @@ CGRect IASKCGRectSwap(CGRect rect);
 		return cell;        
     } else if ([[specifier type] isEqualToString:kIASKButtonSpecifier]) {
         if (!cell) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]] autorelease];
+			 */
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]];
 			cell.backgroundColor = [UIColor whiteColor];
         }
         cell.textLabel.text = [specifier title];
@@ -527,7 +570,11 @@ CGRect IASKCGRectSwap(CGRect rect);
         return cell;
     } else if ([[specifier type] isEqualToString:kIASKMailComposeSpecifier]) {
         if (!cell) {
-            cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			 cell = [[[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]] autorelease];
+			 */
+            cell = [[IASKPSTitleValueSpecifierViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:[specifier type]];
 			[cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
 			cell.backgroundColor = [UIColor whiteColor];
         }
@@ -537,7 +584,11 @@ CGRect IASKCGRectSwap(CGRect rect);
 		return cell;
 	} else {
         if (!cell) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]] autorelease];
+			//DD
+			/*
+			 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]] autorelease];
+			 */
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[specifier type]];
 			cell.backgroundColor = [UIColor whiteColor];
         }
         [[cell textLabel] setText:[specifier title]];
@@ -574,8 +625,9 @@ CGRect IASKCGRectSwap(CGRect rect);
             // add the new view controller to the dictionary and then to the 'viewList' array
             [newItemDict setObject:targetViewController forKey:@"viewController"];
             [self.viewList replaceObjectAtIndex:kIASKSpecifierValuesViewControllerIndex withObject:newItemDict];
-            [targetViewController release];
-            
+            //DD
+			//[targetViewController release];
+			
             // load the view controll back in to push it
             targetViewController = [[self.viewList objectAtIndex:kIASKSpecifierValuesViewControllerIndex] objectForKey:@"viewController"];
         }
@@ -601,7 +653,9 @@ CGRect IASKCGRectSwap(CGRect rect);
             if (!initSelector) {
                 initSelector = @selector(init);
             }
-            UIViewController * vc = [vcClass performSelector:@selector(alloc)];
+            //DD
+			UIViewController *vc = [vcClass alloc];
+			//UIViewController * vc = [vcClass performSelector:@selector(alloc)];
             [vc performSelector:initSelector withObject:[specifier file] withObject:[specifier key]];
 			if ([vc respondsToSelector:@selector(setDelegate:)]) {
 				[vc performSelector:@selector(setDelegate:) withObject:self.delegate];
@@ -611,7 +665,8 @@ CGRect IASKCGRectSwap(CGRect rect);
 			}
 			self.navigationController.delegate = nil;
             [self.navigationController pushViewController:vc animated:YES];
-            [vc performSelector:@selector(release)];
+            //DD
+			//[vc performSelector:@selector(release)];
             return;
         }
         
@@ -636,8 +691,9 @@ CGRect IASKCGRectSwap(CGRect rect);
             // add the new view controller to the dictionary and then to the 'viewList' array
             [newItemDict setObject:targetViewController forKey:@"viewController"];
             [self.viewList replaceObjectAtIndex:kIASKSpecifierChildViewControllerIndex withObject:newItemDict];
-            [targetViewController release];
-            
+            //DD
+			//[targetViewController release];
+			
             // load the view controll back in to push it
             targetViewController = [[self.viewList objectAtIndex:kIASKSpecifierChildViewControllerIndex] objectForKey:@"viewController"];
         }
@@ -708,7 +764,8 @@ CGRect IASKCGRectSwap(CGRect rect);
             
             mailViewController.mailComposeDelegate = vc;
             [vc presentModalViewController:mailViewController animated:YES];
-            [mailViewController release];
+			//DD
+			//[mailViewController release];
         } else {
             UIAlertView *alert = [[UIAlertView alloc]
                                   initWithTitle:NSLocalizedString(@"Mail not configured", @"InAppSettingsKit")
@@ -717,7 +774,8 @@ CGRect IASKCGRectSwap(CGRect rect);
                                   cancelButtonTitle:NSLocalizedString(@"OK", @"InAppSettingsKit")
                                   otherButtonTitles:nil];
             [alert show];
-            [alert release];
+			//DD
+			//[alert release];
         }
 
 	} else {

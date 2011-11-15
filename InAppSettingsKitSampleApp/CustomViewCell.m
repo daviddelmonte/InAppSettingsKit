@@ -28,13 +28,14 @@
     // Configure the view for the selected state
 }
 
-
-- (void)dealloc {
-	[textView release];
-	textView = nil;
-
-    [super dealloc];
-}
-
+//DD
+/*
+ - (void)dealloc {
+ [textView release];
+ textView = nil;
+ 
+ [super dealloc];
+ }
+ */
 
 @end
